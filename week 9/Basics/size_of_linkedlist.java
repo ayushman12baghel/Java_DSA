@@ -1,4 +1,4 @@
-public class Add_in_the_middle {
+public class size_of_linkedlist {
     public static class Node {
         int data;
         Node next;
@@ -11,10 +11,12 @@ public class Add_in_the_middle {
 
     public static Node head;
     public static Node tail;
+    public static int size;
 
     public void addFirst(int data) {
         // step1=create new node
         Node newNode = new Node(data);
+        size++;
         if (head == null) {
             head = tail = newNode;
             return;
@@ -29,6 +31,7 @@ public class Add_in_the_middle {
 
     public void addLast(int data) {
         Node newNode = new Node(data);
+        size++;
         if (head == null) {
             head = tail = newNode;
             return;
@@ -57,6 +60,7 @@ public class Add_in_the_middle {
             return;
         }
         Node newNode = new Node(data);
+        size++;
         Node temp = head;
         int i = 0;
         while (i < index - 1) {
@@ -70,7 +74,7 @@ public class Add_in_the_middle {
     }
 
     public static void main(String[] args) {
-        Add_in_the_middle ll = new Add_in_the_middle();
+        size_of_linkedlist ll = new size_of_linkedlist();
         ll.addFirst(2);
         ll.addFirst(1);
         ll.addLast(3);
@@ -78,5 +82,6 @@ public class Add_in_the_middle {
         ll.print();
         ll.add(2, 9);
         ll.print();
+        System.out.println(size);
     }
 }
