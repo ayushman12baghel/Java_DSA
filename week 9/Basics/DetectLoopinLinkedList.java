@@ -1,4 +1,4 @@
-public class palindrome {
+public class DetectLoopinLinkedList {
     public static class Node {
         int data;
         Node next;
@@ -54,57 +54,25 @@ public class palindrome {
         System.out.println("null");
     }
 
-    public Node findMid(Node head) {
+    public static boolean isCycle() {
         Node slow = head;
         Node fast = head;
         while (fast != null && fast.next != null) {
-            slow = slow.next; // +1
-            fast = fast.next.next; // +2
-        }
-        return slow; // slow is midNode
-    }
-
-    public boolean checkPalindrome() {
-        if (head == null || head.next == null) {
-            return true;
-        }
-        // step 1 = find mid
-        Node midNode = findMid(head);
-
-        // step 2 =reverse second half
-        Node prev = null;
-        Node curr = midNode;
-        Node next;
-        while (curr != null) {
-            next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
-        }
-
-        Node right = prev;// right half head;
-        Node left = head;
-
-        // step 3 = check left half and right half
-        while (right != null) {
-            if (left.data != right.data) {
-                return false;
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == slow) {
+                return true;
             }
-            left = left.next;
-            right = right.next;
         }
-        return true;
-
+        return false;
     }
 
     public static void main(String[] args) {
-        palindrome ll = new palindrome();
-        ll.addFirst(2);
-        ll.addFirst(1);
-        ll.addLast(3);
-        ll.addLast(4);
-        ll.print();
-        System.out.println(ll.checkPalindrome());
+        head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = head;
+        System.out.println(isCycle());
 
     }
 }
