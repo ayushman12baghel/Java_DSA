@@ -45,6 +45,40 @@ public class BinaryTreeLevelOrderTraversal {
         return res;
     }
 
+    public static List<List<Integer>> levelorder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        q.add(null);
+
+        while (!q.isEmpty()) {
+            TreeNode currNode = q.remove();
+            List<Integer> currLevel = new ArrayList<>();
+            if (currNode == null) {
+                // System.out.println();
+                if (q.isEmpty()) {
+                    break;
+                } else {
+                    q.add(null);
+                }
+            } else {
+                currLevel.add(currNode.val);
+                if (currNode.left != null) {
+                    q.add(currNode.left);
+                }
+                if (currNode.right != null) {
+                    q.add(currNode.right);
+                }
+            }
+            res.add(currLevel);
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         // Create the binary tree [3,9,20,null,null,15,7]
         TreeNode root = new TreeNode(3);
@@ -54,9 +88,13 @@ public class BinaryTreeLevelOrderTraversal {
         root.right.right = new TreeNode(7);
 
         List<List<Integer>> result = levelOrder(root);
+        List<List<Integer>> result2 = levelorder(root);
 
         // Print the result
         for (List<Integer> level : result) {
+            System.out.println(level);
+        }
+        for (List<Integer> level : result2) {
             System.out.println(level);
         }
     }
