@@ -59,6 +59,25 @@ public class LevelorderTraversal {
                 }
             }
         }
+
+        public static void levelOrder2(Node root) {
+            if (root == null)
+                return;
+            Queue<Node> q = new LinkedList<>();
+            q.add(root);
+            while (!q.isEmpty()) {
+                int levelSize = q.size();
+                for (int i = 0; i < levelSize; i++) {
+                    Node currNode = q.poll();
+                    System.out.print(currNode.data + " ");
+                    if (currNode.left != null)
+                        q.add(currNode.left);
+                    if (currNode.right != null)
+                        q.add(currNode.right);
+                }
+                System.out.println();
+            }
+        }
     }
 
     public static void main(String args[]) {
@@ -66,5 +85,6 @@ public class LevelorderTraversal {
         BinaryTree tree = new BinaryTree();
         Node root = tree.buildTree(nodes);
         tree.levelorder(root);
+        tree.levelOrder2(root);
     }
 }
