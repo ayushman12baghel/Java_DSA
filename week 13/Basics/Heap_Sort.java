@@ -14,13 +14,20 @@ public class Heap_Sort {
             maxIdx = right;
         }
 
-        if(max)
+        if (maxIdx != i) {
+            // swap
+            int temp = arr[i];
+            arr[i] = arr[maxIdx];
+            arr[maxIdx] = temp;
+
+            heapify(arr, maxIdx, size);
+        }
     }
 
     public static void heapSort(int arr[]) {
         // step1 - build maxHeap
-        int n = arr.length - 1;
-        for (int i = n / 2; i >= 0; i++) {
+        int n = arr.length;
+        for (int i = n / 2; i >= 0; i--) {
             heapify(arr, i, n);
         }
 
@@ -37,5 +44,11 @@ public class Heap_Sort {
 
     public static void main(String args[]) {
         int arr[] = { 1, 2, 4, 5, 3 };
+        heapSort(arr);
+
+        // print
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
     }
 }
