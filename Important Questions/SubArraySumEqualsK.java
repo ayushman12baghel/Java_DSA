@@ -14,6 +14,7 @@ public class SubArraySumEqualsK {
                 } else {
                     currSum = prefix[j] - prefix[i - 1];
                 }
+                
                 if (currSum == k) {
                     count++;
                 }
