@@ -15,7 +15,7 @@ public class breadth_First_Search {
         }
     }
 
-    static void createGraph(ArrayList<Edge> graph[]) {
+    static void createGraph(ArrayList<Edge> graph[]) {// O(V+E)
 
         for (int i = 0; i < 7; i++) {
             graph[i] = new ArrayList<>();
