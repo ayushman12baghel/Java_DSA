@@ -54,9 +54,12 @@ public class Cycle_Detection {
         boolean vis[] = new boolean[graph.length];
         for (int i = 0; i < graph.length; i++) {
             if (!vis[i]) {
-                detectCycleUtil(graph, vis, i, -1);
+                if (detectCycleUtil(graph, vis, i, -1)) {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     public static boolean detectCycleUtil(ArrayList<Edge>[] graph, boolean[] vis, int curr, int par) {
@@ -65,7 +68,7 @@ public class Cycle_Detection {
             Edge e = graph[curr].get(i);
 
             // case 3
-            if (!vis[e.dest] && detectCycleUtil(graph, vis, e, dest, curr)) {
+            if (!vis[e.dest] && detectCycleUtil(graph, vis, e.dest, curr)) {
                 return true;
             }
             // case 1
@@ -84,6 +87,6 @@ public class Cycle_Detection {
         ArrayList<Edge>[] graph = new ArrayList[V];// null -> empty arraylist
 
         createGraph(graph);
-        dfs(graph);
+        System.out.println(detectCycle(graph));
     }
 }
