@@ -68,8 +68,10 @@ public class Cycle_Detection {
             Edge e = graph[curr].get(i);
 
             // case 3
-            if (!vis[e.dest] && detectCycleUtil(graph, vis, e.dest, curr)) {
-                return true;
+            if (!vis[e.dest]) {
+                if (detectCycleUtil(graph, vis, e.dest, curr)) {
+                    return true;
+                }
             }
             // case 1
             else if (vis[e.dest] && e.dest != par) {
