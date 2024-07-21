@@ -53,6 +53,7 @@ public class Topological_Sorting_DFS {
                 topSortUtil(graph, e.dest, vis, s);
             }
         }
+        
         s.push(curr);
     }
 
