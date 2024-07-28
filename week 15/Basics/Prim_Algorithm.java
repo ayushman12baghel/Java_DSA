@@ -74,6 +74,7 @@ public class Prim_Algorithm {
         int V = 4;
         ArrayList<Edge> graph[] = new ArrayList[V];
         createGraph(graph);
+
         MST(graph);
     }
 }
