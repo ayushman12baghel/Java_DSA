@@ -66,7 +66,7 @@ public class Cheapest_Flight_with_k_stops {
                 int wt = e.wt;
 
                 if (dist[u] != Integer.MAX_VALUE && curr.cost + wt < dist[v] && curr.stops <= k) {
-                    dist[v] = dist[u] + wt;
+                    dist[v] = curr.cost + wt;
                     q.add(new Info(v, dist[v], curr.stops + 1));
                 }
             }
