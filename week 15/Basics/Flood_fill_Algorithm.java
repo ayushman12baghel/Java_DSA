@@ -6,6 +6,8 @@ public class Flood_fill_Algorithm {
                 || image[sr][sc] != orgColor) {
             return;
         }
+        image[sr][sc] = color;
+        vis[sr][sc] = true;
 
         // left
         helper(image, sr, sc - 1, color, vis, orgColor);
