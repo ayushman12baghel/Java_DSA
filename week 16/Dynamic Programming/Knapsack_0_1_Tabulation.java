@@ -1,5 +1,14 @@
 public class Knapsack_0_1_Tabulation {
 
+    public static void print(int dp[][]) {
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
     public static int knapsack(int val[], int wt[], int W) {
         int dp[][] = new int[val.length + 1][W + 1];
         int n = val.length;
@@ -24,7 +33,7 @@ public class Knapsack_0_1_Tabulation {
                 }
             }
         }
-
+        print(dp);
         return dp[n][W];
     }
 
