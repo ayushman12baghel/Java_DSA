@@ -1,6 +1,6 @@
 public class Knapsack_Memoisation {
 
-    public static int knapsack(int val[], int wt[], int W, int n, int dp[][]) {
+    public static int knapsack(int val[], int wt[], int W, int n, int dp[][]) {// O(n*W)
         if (W == 0 || n == 0) {
             return 0;
         }
