@@ -46,9 +46,30 @@ public class Longest_Increasing_Subsequence {
         return lcs(arr, arr2);
     }
 
+    public static int longestIncreasingSubsequence2(int arr[]) {
+        if (arr == null || arr.length == 0) {
+            return 0;
+        }
+        int dp[] = new int[arr.length];
+        Arrays.fill(dp, 1);
+        int length = 1;
+
+        for (int i = 1; i < arr.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[i] > arr[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            length = Math.max(length, dp[i]);
+        }
+
+        return length;
+    }
+
     public static void main(String[] args) {
         int arr[] = { 50, 3, 10, 7, 40, 80 };
 
         System.out.println(longestIncreasingSubsequence(arr));
+        System.out.println(longestIncreasingSubsequence2(arr));
     }
 }
