@@ -26,9 +26,7 @@ public class MCM_Memoisation {
         int n = arr.length;
         int dp[][] = new int[n][n];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                dp[i][j] = -1;
-            }
+            Arrays.fill(dp[i], -1);
         }
 
         System.out.println(mcm(arr, 1, n - 1, dp));
