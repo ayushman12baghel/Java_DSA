@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class SubArraySumEqualsK {
     public static int SubarraySumEqualsK(int arr[], int k) {
         int count = 0;
@@ -14,7 +16,7 @@ public class SubArraySumEqualsK {
                 } else {
                     currSum = prefix[j] - prefix[i - 1];
                 }
-                
+
                 if (currSum == k) {
                     count++;
                 }
@@ -23,9 +25,29 @@ public class SubArraySumEqualsK {
         return count;
     }
 
+    public static int subarraySum(int nums[], int k) {
+        int count = 0;
+        int cumSum = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+
+        for (int i = 0; i < nums.length; i++) {
+            cumSum += nums[i];
+            if (map.containsKey(cumSum - k)) {
+                count += map.get(cumSum - k);
+            }
+
+            map.put(cumSum, map.getOrDefault(cumSum, 0) + 1);
+        }
+
+        return count;
+    }
+
     public static void main(String args[]) {
         int arr[] = { 1, 2, 3 };
         int k = 3;
         System.out.println(SubarraySumEqualsK(arr, k));
+
+        System.out.println(subarraySum(arr, k));
     }
 }
