@@ -17,6 +17,7 @@ public class Subsets {
             backtrack(i + 1, nums, subset, list);
             subset.remove(subset.size() - 1);
         }
+
     }
 
     public static void main(String args[]) {
