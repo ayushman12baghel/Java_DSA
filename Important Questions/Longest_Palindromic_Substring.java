@@ -1,5 +1,14 @@
 public class Longest_Palindromic_Substring {
 
+    public static void print(boolean dp[][]) {
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
     public static String longestPalindromicSubstring(String str) {
         int n = str.length();
         boolean dp[][] = new boolean[n][n];
@@ -29,6 +38,7 @@ public class Longest_Palindromic_Substring {
                 }
             }
         }
+        print(dp);
 
         return ans;
 
