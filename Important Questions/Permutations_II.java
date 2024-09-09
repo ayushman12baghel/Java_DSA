@@ -24,6 +24,7 @@ public class Permutations_II {
             backtrack(list, curr, nums, used);
             used[i] = false;
             curr.remove(curr.size() - 1);
+
         }
     }
 
