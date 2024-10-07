@@ -25,6 +25,7 @@ public class Median_of_two_Sorted_Array {
         } else {
             return (double) (nums3[mid] + nums3[mid - 1]) / 2;
         }
+
     }
 
     public static double findMedianSortedArrays2(int[] nums1, int[] nums2) {
