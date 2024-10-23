@@ -38,10 +38,50 @@ public class Longest_Common_Prefix {
         return sb.toString();
     }
 
+    // practice
+
+    public static String lcp(String strs[]) {
+        StringBuilder sb = new StringBuilder();
+        Arrays.sort(strs);
+
+        String start = strs[0];
+        String end = strs[strs.length - 1];
+
+        for (int i = 0; i < start.length(); i++) {
+            if (start.charAt(i) != end.charAt(i)) {
+                break;
+            }
+            sb.append(start.charAt(i));
+        }
+
+        return sb.toString();
+    }
+
+    public static String lcp2(String strs[]) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        String prefix = strs[0];
+
+        for (int i = 1; i < strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.length() == 0) {
+                    return "";
+                }
+            }
+        }
+
+        return prefix;
+    }
+
     public static void main(String args[]) {
         String strs[] = { "flower", "flow", "flight" };
 
         System.out.println(longestCommonPrefix(strs));
         System.out.println(longestCommonPrefix2(strs));
+
+        System.out.println(lcp(strs));
+        System.out.println(lcp2(strs));
     }
 }
