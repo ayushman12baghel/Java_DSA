@@ -28,6 +28,37 @@ public class FInd_if_array_can_be_Sorted {
         return true;
     }
 
+    // Optimised O(n) space O(1)
+    public static boolean canSortArray3(int[] nums) {
+        int numOfSetBits = Integer.bitCount(nums[0]);
+        int maxOfSegment = nums[0];
+        int minOfSegment = nums[0];
+        int maxOfPrevSegment = Integer.MIN_VALUE;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (Integer.bitCount(nums[i]) == numOfSetBits) {
+                maxOfSegment = Math.max(maxOfSegment, nums[i]);
+                minOfSegment = Math.min(minOfSegment, nums[i]);
+            } else {
+
+                if (minOfSegment < maxOfPrevSegment) {
+                    return false;
+                }
+
+                maxOfPrevSegment = maxOfSegment;
+
+                maxOfSegment = nums[i];
+                minOfSegment = nums[i];
+                numOfSetBits = Integer.bitCount(nums[i]);
+            }
+        }
+
+        if (minOfSegment < maxOfPrevSegment) {
+            return false;
+        }
+        return true;
+    }
+
     // Failing 5 test cases
     public static boolean canSortArray2(int[] nums) {
         HashMap<Integer, List<Integer>> map = new HashMap<>();
@@ -65,5 +96,6 @@ public class FInd_if_array_can_be_Sorted {
 
         System.out.println(canSortArray(nums));
         System.out.println(canSortArray2(nums));
+        System.out.println(canSortArray3(nums));
     }
 }
