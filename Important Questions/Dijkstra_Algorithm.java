@@ -62,6 +62,35 @@ public class Dijkstra_Algorithm {
         return dist;
     }
 
+    // using TreeSet
+
+    public static int[] dijkstra2(ArrayList<ArrayList<int[]>> graph, int src) {
+        int dist[] = new int[graph.size()];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+        TreeSet<int[]> set = new TreeSet<>((a, b) -> Integer.compare(a[1], b[1]));
+        set.add(new int[] { src, 0 });
+
+        while (!set.isEmpty()) {
+            int curr[] = set.pollFirst();
+            int node = curr[0];
+            int currDist = curr[1];
+
+            for (int neighbour[] : graph.get(node)) {
+                int next = neighbour[0];
+                int edgeWeight = neighbour[1];
+
+                if (currDist + edgeWeight < dist[next]) {
+                    set.remove(new int[] { next, dist[next] });
+                    dist[next] = currDist + edgeWeight;
+                    set.add(new int[] { next, dist[next] });
+                }
+            }
+        }
+
+        return dist;
+    }
+
     public static void main(String args[]) {
         int V = 6;
         ArrayList<ArrayList<int[]>> graph = new ArrayList<>(V);
@@ -71,6 +100,12 @@ public class Dijkstra_Algorithm {
 
         for (int i = 0; i < ans.length; i++) {
             System.out.print(ans[i] + " ");
+        }
+        System.out.println();
+
+        int ans2[] = dijkstra2(graph, 0);
+        for (int i = 0; i < ans2.length; i++) {
+            System.out.print(ans2[i] + " ");
         }
     }
 }
