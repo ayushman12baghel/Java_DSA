@@ -39,6 +39,25 @@ public class COnstructingTree {
         return getSumUtil(0, 0, n - 1, qi, qj);
     }
 
+    public static void updateUtil(int i, int si, int sj, int index, int diff) {
+        if (index > sj || index < si) {
+            return;
+        }
+        tree[i] += diff;
+        if (si != sj) {
+            int mid = (si + sj) / 2;
+            updateUtil(2 * i + 1, si, mid, index, diff);
+            updateUtil(2 * i + 2, mid + 1, sj, index, diff);
+        }
+    }
+
+    public static void update(int arr[], int index, int value) {
+        int n = arr.length;
+        int diff = value - arr[index];
+        arr[index] = value;
+        updateUtil(0, 0, n - 1, index, diff);
+    }
+
     public static void main(String args[]) {
         int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
         int n = arr.length;
@@ -50,6 +69,8 @@ public class COnstructingTree {
         }
         System.out.println();
 
+        System.out.println(getSum(arr, 2, 5));
+        update(arr, 2, 2);
         System.out.println(getSum(arr, 2, 5));
     }
 }
