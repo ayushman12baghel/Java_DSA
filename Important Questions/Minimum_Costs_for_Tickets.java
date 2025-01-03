@@ -39,10 +39,30 @@ public class Minimum_Costs_for_Tickets {
         return dp[i] = Math.min(cost_0, Math.min(cost_1, cost_2));
     }
 
+    public static int mincostTickets(int[] days, int[] costs) {
+        int dp[] = new int[days[days.length - 1] + 1];
+        int lastDay = days[days.length - 1];
+        int j = 0;
+
+        for (int i = 1; i < lastDay + 1; i++) {
+            if (days[j] > i) {
+                dp[i] = dp[i - 1];
+            } else {
+                j++;
+                dp[i] = Math.min(costs[0] + dp[i - 1],
+                        Math.min(dp[Math.max(0, i - 7)] + costs[1], dp[Math.max(0, i - 30)] + costs[2]));
+            }
+        }
+
+        return dp[lastDay];
+
+    }
+
     public static void main(String args[]) {
         int days[] = { 1, 4, 6, 7, 8, 20 };
         int costs[] = { 2, 7, 15 };
 
         System.out.println(minCosts(days, costs));
+        System.out.println(mincostTickets(days, costs));
     }
 }
