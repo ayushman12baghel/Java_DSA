@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.LinkedList;
 
 public class Cycle_Detection_Directed {
     static class Edge {
@@ -32,6 +33,7 @@ public class Cycle_Detection_Directed {
         graph[3].add(new Edge(3, 0, 1));
     }
 
+    // DFS
     public static boolean isCycle(ArrayList<Edge>[] graph) {
         boolean vis[] = new boolean[graph.length];
         boolean stack[] = new boolean[graph.length];
@@ -65,11 +67,50 @@ public class Cycle_Detection_Directed {
         return false;
     }
 
+    // BFS
+    public static boolean isCycle2(ArrayList<Edge>[] graph) {
+        boolean visited[] = new boolean[graph.length];
+
+        for (int i = 0; i < graph.length; i++) {
+            if (!visited[i] && isCycleUtil(graph, i, visited)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isCycleUtil(ArrayList<Edge>[] graph, int current, boolean visited[]) {
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[] { current, -1 });
+        visited[current] = true;
+
+        while (!queue.isEmpty()) {
+            int temp[] = queue.poll();
+            int node = temp[0];
+            int parent = temp[1];
+
+            for (Edge e : graph[node]) {
+                int neighbour = e.dest;
+
+                if (!visited[neighbour]) {
+                    visited[neighbour] = true;
+                    queue.offer(new int[] { neighbour, node });
+                } else if (neighbour != parent) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
         int V = 4;
         ArrayList<Edge>[] graph = new ArrayList[V];
 
         createGraph(graph);
         System.out.println(isCycle(graph));
+        System.out.println(isCycle2(graph));
     }
 }
