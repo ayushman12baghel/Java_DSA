@@ -43,8 +43,7 @@ public class KMP_Algorithm {
                 i++;
             } else {
                 if (length != 0) {
-                    lps[i] = lps[length - 1];
-                    i++;
+                    length = lps[length - 1];
                 } else {
                     lps[i] = 0;
                     i++;
