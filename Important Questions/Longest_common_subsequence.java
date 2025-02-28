@@ -1,4 +1,25 @@
 public class Longest_common_subsequence {
+
+    // Using Recursion
+    public int longestCommonSubsequence(String text1, String text2) {
+        return solve(text1, text2, 0, 0);
+    }
+
+    public int solve(String str1, String str2, int i, int j) {
+        if (i >= str1.length() || j >= str2.length()) {
+            return 0;
+        }
+
+        if (str1.charAt(i) == str2.charAt(j)) {
+            return solve(str1, str2, i + 1, j + 1) + 1;
+        } else {
+            int ans1 = solve(str1, str2, i + 1, j);
+            int ans2 = solve(str1, str2, i, j + 1);
+
+            return Math.max(ans1, ans2);
+        }
+    }
+
     public static int lcs(String str1, String str2, int n, int m, int dp[][]) {
         if (n == 0 || m == 0) {
             return 0;
