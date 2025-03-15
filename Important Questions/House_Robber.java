@@ -1,6 +1,31 @@
+import java.util.Arrays;
+
 public class House_Robber {
 
-    public static int rob(int nums[]) {
+    // Approach 1 Using Memoisation O(n)
+    public static int rob(int[] nums) {
+        int dp[] = new int[nums.length];
+        Arrays.fill(dp, -1);
+        return solve(nums, 0, dp);
+    }
+
+    public static int solve(int nums[], int i, int dp[]) {
+        if (i >= nums.length) {
+            return 0;
+        }
+
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+
+        int taken = nums[i] + solve(nums, i + 2, dp);
+        int notTaken = solve(nums, i + 1, dp);
+
+        return dp[i] = Math.max(taken, notTaken);
+    }
+
+    // Approach 2 Using Tabulation O(n)
+    public static int rob2(int nums[]) {
         if (nums.length == 0) {
             return 0;
         }
@@ -19,5 +44,6 @@ public class House_Robber {
         int nums[] = { 2, 1, 1, 2 };
 
         System.out.println(rob(nums));
+        System.out.println(rob2(nums));
     }
 }
