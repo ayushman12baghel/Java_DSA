@@ -26,8 +26,8 @@ public class House_Robber {
 
     // Approach 2 Using Tabulation O(n)
     public static int rob2(int nums[]) {
-        if (nums.length == 0) {
-            return 0;
+        if (nums.length < 2) {
+            return nums[0];
         }
         int dp[] = new int[nums.length];
         dp[0] = nums[0];
