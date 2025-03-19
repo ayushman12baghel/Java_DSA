@@ -84,6 +84,28 @@ public class Minimum_Time_to_make_Binary_Array_Equal_To_One_I {
         return result;
     }
 
+    // Approach 4 Using Sliding Window Approach O(n)
+    public static int minOperations5(int nums[]) {
+        int result = 0;
+
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i - 2] == 0) {
+                nums[i - 2] = 1;
+                nums[i - 1] = (nums[i - 1] == 0 ? 1 : 0);
+                nums[i] = (nums[i] == 0 ? 1 : 0);
+                result++;
+            }
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                return -1;
+            }
+        }
+
+        return result;
+    }
+
     public static void main(String args[]) {
         int nums[] = { 0, 1, 1, 1, 0, 0 };
         int nums2[] = { 0, 1, 1, 1, 0, 0 };
