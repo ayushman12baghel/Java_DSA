@@ -67,7 +67,7 @@ class DSU2 {
         } else if (parentX < parentY) {
             parent[parentX] = parentY;
         } else {
-            parent[parentX] = parentY + 1;
+            parent[parentX] = parentY;
             rank[parentY]++;
         }
     }
