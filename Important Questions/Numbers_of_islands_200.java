@@ -2,6 +2,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Numbers_of_islands_200 {
+
+    // Approach 1 Using DFS
     public static void dfs(char grid[][], int i, int j) {
         if (i >= 0 && j >= 0 && i < grid.length && j < grid[0].length && grid[i][j] == '1') {
             grid[i][j] = '0';
@@ -55,7 +57,7 @@ public class Numbers_of_islands_200 {
         }
     }
 
-    // BFS
+    // Approach 2 Using BFS
     public static int numIslands3(char[][] grid) {
         int count = 0;
 
@@ -99,6 +101,86 @@ public class Numbers_of_islands_200 {
         }
     }
 
+    // Approach 3 Using DSU
+    static class DSU {
+        int n;
+        int parent[];
+        int size[];
+
+        public DSU(int n) {
+            this.n = n;
+            this.parent = new int[n];
+            this.size = new int[n];
+
+            for (int i = 0; i < n; i++) {
+                size[i] = 1;
+                parent[i] = i;
+            }
+        }
+
+        public int find(int i) {
+            if (i == parent[i]) {
+                return i;
+            }
+
+            return parent[i] = find(parent[i]);
+        }
+
+        public void union(int x, int y) {
+            int parentX = find(x);
+            int parentY = find(y);
+
+            if (parentX == parentY) {
+                return;
+            }
+
+            if (size[parentX] > size[parentY]) {
+                parent[parentY] = parentX;
+                size[parentX] += size[parentY];
+            } else if (size[parentX] < size[parentY]) {
+                parent[parentX] = parentY;
+                size[parentY] += size[parentX];
+            } else {
+                parent[parentX] = parentY;
+                size[parentY] += size[parentX];
+            }
+        }
+    }
+
+    public static int numIslands4(char[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        DSU dsu = new DSU(n * m);
+
+        int directions[][] = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1') {
+                    for (int direction[] : directions) {
+                        int row = i + direction[0];
+                        int col = j + direction[1];
+
+                        if (row >= 0 && col >= 0 && row < n && col < m && grid[row][col] == '1') {
+                            dsu.union(i * m + j, row * m + col);
+                        }
+                    }
+                }
+            }
+        }
+
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1' && dsu.find(i * m + j) == (i * m + j)) {
+                    result++;
+                }
+            }
+        }
+
+        return result;
+    }
+
     public static void main(String args[]) {
         char grid[][] = {
                 { '1', '1', '0', '0', '0' },
@@ -106,6 +188,7 @@ public class Numbers_of_islands_200 {
                 { '0', '0', '1', '0', '0' },
                 { '0', '0', '0', '1', '1' }
         };
+        System.out.println(numIslands4(grid));
         System.out.println(numIslands(grid));
         char grid2[][] = {
                 { '1', '1', '0', '0', '0' },
