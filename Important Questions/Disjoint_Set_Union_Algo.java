@@ -73,6 +73,52 @@ class DSU2 {
     }
 }
 
+// DSU Using Size
+class DSU3 {
+    int n;
+    int parent[];
+    int size[];
+
+    public DSU3(int n) {
+        this.n = n;
+        this.parent = new int[n];
+        this.size = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    public int find(int i) {
+        if (i == parent[i]) {
+            return i;
+        }
+
+        return parent[i] = find(parent[i]);
+    }
+
+    public void union(int x, int y) {
+        int parentX = find(x);
+        int parentY = find(y);
+
+        if (parentX == parentY) {
+            return;
+        }
+
+        if (size[parentX] > size[parentY]) {
+            parent[parentY] = parentX;
+            size[parentX] += size[parentY];
+        } else if (size[parentX] < size[parentY]) {
+            parent[parentX] = parentY;
+            size[parentY] += size[parentX];
+        } else {
+            parent[parentX] = parentY;
+            size[parentY] += size[parentX];
+        }
+    }
+}
+
 public class Disjoint_Set_Union_Algo {
     public static void main(String args[]) {
         DSU dsu = new DSU(5);
@@ -90,5 +136,11 @@ public class Disjoint_Set_Union_Algo {
 
         System.out.println(dsu2.find(0));
         System.out.println(dsu2.find(2));
+        DSU3 dsu3 = new DSU3(5);
+        dsu3.union(0, 1);
+        dsu3.union(1, 2);
+
+        System.out.println(dsu3.find(0));
+        System.out.println(dsu3.find(2));
     }
 }
