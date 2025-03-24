@@ -62,10 +62,32 @@ public class Diameter_Of_Binary_Tree {
         return new Info(diam, ht);
     }
 
+    // Approach O(n)
+    static int maxDiameter;
+
+    public static int diameterOfBinaryTree(Node root) {
+        maxDiameter = 0;
+        dfs(root);
+        return maxDiameter;
+    }
+
+    public static int dfs(Node root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftHeight = dfs(root.left);
+        int rightHeight = dfs(root.right);
+        maxDiameter = Math.max(maxDiameter, leftHeight + rightHeight);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
     public static void main(String args[]) {
         int nodes[] = { 1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1 };
         BinaryTree tree = new BinaryTree();
         Node root = tree.buildTree(nodes);
+        System.out.println(diameterOfBinaryTree(root));
         System.out.println(diameter(root).diam);
     }
 }
