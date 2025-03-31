@@ -6,7 +6,7 @@ public class Partition_Labels {
         List<Integer> ans = new ArrayList<>();
         int lastIndex[] = new int[26];
 
-        for (int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < st r.length(); i++) {
             lastIndex[str.charAt(i) - 'a'] = i;
         }
 
