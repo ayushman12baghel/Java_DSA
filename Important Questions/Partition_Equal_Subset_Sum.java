@@ -17,6 +17,7 @@ public class Partition_Equal_Subset_Sum {
         return solve(nums, 0, target, 0, dp);
     }
 
+    // Approach 2 Using Tabulation
     public static boolean solve(int nums[], int i, int target, int sum, Boolean dp[][]) {
         if (sum == target) {
             return true;
@@ -65,10 +66,39 @@ public class Partition_Equal_Subset_Sum {
         return false;
     }
 
+    // More Optimised Tabulation
+    public static boolean canPartition2(int nums[]) {
+        int n = nums.length;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        int target = sum / 2;
+        int dp[][] = new int[n + 1][target + 1];
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = 1; j < target + 1; j++) {
+                if (nums[i - 1] <= j) {
+                    dp[i][j] = Math.max(nums[i - 1] + dp[i - 1][j - nums[i - 1]], dp[i - 1][j]);
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        return target == dp[n][target];
+    }
+
     public static void main(String args[]) {
         int arr[] = { 1, 5, 11, 5 };
 
         System.out.println(canPartition(arr));
         System.out.println(canPartition1(arr));
+        System.out.println(canPartition2(arr));
     }
 }
