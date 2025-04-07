@@ -1,5 +1,41 @@
 public class Partition_Equal_Subset_Sum {
 
+    // Approach 1 Using Recursion and Memoisation
+    public static boolean canPartition1(int nums[]) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+
+        if (sum % 2 != 0) {
+            return false;
+        }
+
+        int target = sum / 2;
+        Boolean dp[][] = new Boolean[nums.length][target + 1];
+
+        return solve(nums, 0, target, 0, dp);
+    }
+
+    public static boolean solve(int nums[], int i, int target, int sum, Boolean dp[][]) {
+        if (sum == target) {
+            return true;
+        }
+
+        if (i >= nums.length || sum > target) {
+            return false;
+        }
+
+        if (dp[i][sum] != null) {
+            return dp[i][sum];
+        }
+
+        boolean taken = solve(nums, i + 1, target, sum + nums[i], dp);
+        boolean notTaken = solve(nums, i + 1, target, sum, dp);
+
+        return dp[i][sum] = (taken || notTaken);
+    }
+
     public static boolean canPartition(int arr[]) {
         int n = arr.length;
         int sum = 0;
@@ -33,5 +69,6 @@ public class Partition_Equal_Subset_Sum {
         int arr[] = { 1, 5, 11, 5 };
 
         System.out.println(canPartition(arr));
+        System.out.println(canPartition1(arr));
     }
 }
