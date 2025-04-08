@@ -50,8 +50,8 @@ public class Minimum_Number_of_Operations_to_make_elements_in_Array_Distinct {
 
     public static void main(String args[]) {
         int nums[] = { 1, 2, 3, 4, 2, 3, 3, 5, 7 };
-        System.out.println(minimumOperations(nums));
 
+        System.out.println(minimumOperations(nums));
         System.out.println(minimumOperations2(nums));
     }
 }
