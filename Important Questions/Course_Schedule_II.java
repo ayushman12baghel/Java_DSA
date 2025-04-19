@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Course_Schedule_II {
 
+    // Bfs Kahn's Algorithm
     public static int[] findOrder(int numCourses, int[][] prerequisites) {
         ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
         for (int i = 0; i < numCourses; i++) {
@@ -54,12 +57,71 @@ public class Course_Schedule_II {
         }
     }
 
+    // Using DFS
+    public static int[] findOrder2(int numCourses, int[][] edges) {
+        List<List<Integer>> graph = new ArrayList<>();
+        int n = numCourses;
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int edge[] : edges) {
+            graph.get(edge[1]).add(edge[0]);
+        }
+
+        boolean visited[] = new boolean[n];
+        boolean inRecursion[] = new boolean[n];
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                if (dfs(graph, visited, inRecursion, stack, i)) {
+                    return new int[] {};
+                }
+            }
+        }
+
+        int result[] = new int[n];
+        int i = 0;
+        while (!stack.isEmpty()) {
+            result[i++] = stack.pop();
+        }
+
+        return result;
+    }
+
+    public static boolean dfs(List<List<Integer>> graph, boolean visited[], boolean inRecursion[], Stack<Integer> stack,
+            int curr) {
+        visited[curr] = true;
+        inRecursion[curr] = true;
+
+        for (int neighbour : graph.get(curr)) {
+            if (!visited[neighbour]) {
+                if (dfs(graph, visited, inRecursion, stack, neighbour)) {
+                    return true;
+                }
+            } else if (inRecursion[neighbour]) {
+                return true;
+            }
+        }
+
+        stack.push(curr);
+        inRecursion[curr] = false;
+
+        return false;
+    }
+
     public static void main(String args[]) {
         int prerequisites[][] = { { 1, 0 }, { 2, 0 }, { 3, 1 }, { 3, 2 } };
         int numCourses = 4;
         int ans[] = findOrder(numCourses, prerequisites);
         for (int i = 0; i < ans.length; i++) {
             System.out.print(ans[i] + " ");
+        }
+        System.out.println();
+        int ans2[] = findOrder2(numCourses, prerequisites);
+        for (int i = 0; i < ans2.length; i++) {
+            System.out.print(ans2[i] + " ");
         }
     }
 }
