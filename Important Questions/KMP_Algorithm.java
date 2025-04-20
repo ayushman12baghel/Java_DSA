@@ -18,7 +18,7 @@ public class KMP_Algorithm {
             if (j == m) {
                 result.add(i - j);
                 j = lps[j - 1];
-            } else if (text.charAt(i) != pattern.charAt(j)) {
+            } else if (i < n && text.charAt(i) != pattern.charAt(j)) {
                 if (j != 0) {
                     j = lps[j - 1];
                 } else {
