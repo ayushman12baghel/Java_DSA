@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 public class LongestIncreasingSubsequence {
 
@@ -87,11 +86,77 @@ public class LongestIncreasingSubsequence {
         return ans;
     }
 
+    // By Memoisation
+    public static int lengthOfLIS2(int[] nums) {
+        int dp[][] = new int[nums.length][nums.length + 1];
+        for (int row[] : dp) {
+            Arrays.fill(row, -1);
+        }
+
+        return solve(nums, -1, 0, dp);
+    }
+
+    public static int solve(int nums[], int prevIndex, int index, int dp[][]) {
+        if (index >= nums.length) {
+            return 0;
+        }
+
+        if (dp[index][prevIndex + 1] != -1) {
+            return dp[index][prevIndex + 1];
+        }
+
+        int taken = 0;
+        if (prevIndex == -1 || nums[index] > nums[prevIndex]) {
+            taken = solve(nums, index, index + 1, dp) + 1;
+        }
+        int notTaken = solve(nums, prevIndex, index + 1, dp);
+
+        return dp[index][prevIndex + 1] = Math.max(taken, notTaken);
+    }
+
+    // Printing The LIS
+    public static void printLIS(int nums[]) {
+        int dp[] = new int[nums.length];
+        int parent[] = new int[nums.length];
+        Arrays.fill(dp, 1);
+        Arrays.fill(parent, -1);
+        int maxLength = 1;
+        int lisIndex = -1;
+
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    if (dp[i] < dp[j] + 1) {
+                        dp[i] = dp[j] + 1;
+                        parent[i] = j;
+
+                        if (maxLength < dp[i]) {
+                            maxLength = dp[i];
+                            lisIndex = i;
+                        }
+                    }
+                }
+            }
+        }
+
+        List<Integer> result = new ArrayList<>();
+        while (lisIndex != -1) {
+            result.add(nums[lisIndex]);
+            lisIndex = parent[lisIndex];
+        }
+
+        Collections.reverse(result);
+
+        System.out.println(result);
+    }
+
     public static void main(String[] args) {
         int arr[] = { 50, 3, 10, 7, 40, 80 };
 
         System.out.println(longestIncreasingSubsequence(arr));
         System.out.println(longestIncreasingSubsequence2(arr));
         System.out.println(lengthOfLIS(arr));
+        System.out.println(lengthOfLIS2(arr));
+        printLIS(arr);
     }
 }
