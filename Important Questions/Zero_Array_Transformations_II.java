@@ -109,7 +109,7 @@ public class Zero_Array_Transformations_II {
         while (left <= right) {
             int mid = left + (right - left) / 2;
 
-            if (checkWithDifferenceArray(nums, queries, mid)) {
+            if (checkWithDifferenceArray1(nums, queries, mid)) {
                 ans = mid + 1;
                 right = mid - 1;
             } else {
@@ -120,7 +120,7 @@ public class Zero_Array_Transformations_II {
         return ans;
     }
 
-    public static boolean checkWithDifferenceArray(int nums[], int queries[][], int k) {
+    public static boolean checkWithDifferenceArray1(int nums[], int queries[][], int k) {
         int diff[] = new int[nums.length];
 
         for (int i = 0; i <= k; i++) {
@@ -140,6 +140,35 @@ public class Zero_Array_Transformations_II {
             cumSum += diff[i];
 
             if (nums[i] - cumSum > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Differnce Array Similar to applied in Zero Array Tranf I
+    public static boolean checkWithDifferenceArray2(int nums[], int queries[][], int index) {
+        int diff[] = new int[nums.length];
+
+        for (int i = 0; i <= index; i++) {
+            int left = queries[i][0];
+            int right = queries[i][1];
+            int val = queries[i][2];
+
+            diff[left] -= val;
+
+            if (right + 1 < nums.length) {
+                diff[right + 1] += val;
+            }
+        }
+
+        int cumSum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            cumSum += diff[i];
+
+            if (nums[i] + cumSum > 0) {
                 return false;
             }
         }
