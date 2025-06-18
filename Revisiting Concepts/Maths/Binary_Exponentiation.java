@@ -18,7 +18,27 @@ public class Binary_Exponentiation {
         return result;
     }
 
+    // Iterative Which is more efficient
+    static int mod = 1000000007;
+
+    public static long findPower2(int a, int b) {
+        long result = 1;
+        long base = a % mod;
+
+        while (b > 0) {
+            if (b % 2 != 0) {
+                result = (result * base) % mod;
+            }
+
+            base = (base * base) % mod;
+            b /= 2;
+        }
+
+        return result;
+    }
+
     public static void main(String args[]) {
         System.out.println(findPower(3, 9));
+        System.out.println(findPower2(3, 9));
     }
 }
