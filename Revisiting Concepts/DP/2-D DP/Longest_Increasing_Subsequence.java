@@ -73,6 +73,71 @@ public class Longest_Increasing_Subsequence {
         return max;
     }
 
+    // Approach 3 Patience Sorting BinarySearch O(n*logn)
+    public static int lengthOfLIS4(int nums[]) {
+        int n = nums.length;
+        List<Integer> sorted = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int index = binarySearch(sorted, nums[i]);
+
+            if (index == sorted.size()) {
+                sorted.add(index, nums[i]);
+            } else {
+                sorted.set(index, nums[i]);
+            }
+        }
+
+        return sorted.size();
+    }
+
+    public static int binarySearch(List<Integer> sorted, int target) {
+        int left = 0;
+        int right = sorted.size() - 1;
+        int result = sorted.size();
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (sorted.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                result = mid;
+                right = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
+    // Using Same Code as Maximum Balanced Sbsequence Sum O(n*logn) Patience Sorting
+    public static int lengthOfLIS5(int nums[]) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int ans = 1;
+
+        for (int i = 0; i < nums.length; i++) {
+            int length = 1;
+            Integer key = map.lowerKey(nums[i]);
+
+            if (key != null) {
+                length += map.get(key);
+            }
+
+            map.put(nums[i], Math.max(map.getOrDefault(nums[i], 0), length));
+
+            key = map.higherKey(nums[i]);
+
+            while (key != null && map.get(key) <= length) {
+                map.remove(key);
+                key = map.higherKey(nums[i]);
+            }
+
+            ans = Math.max(ans, length);
+        }
+
+        return ans;
+    }
+
     public static void main(String args[]) {
         int nums[] = { 10, 9, 2, 5, 3, 7, 101, 18 };
 
@@ -80,5 +145,7 @@ public class Longest_Increasing_Subsequence {
         System.out.println(lengthOfLIS2(nums));
 
         System.out.println(lengthOfLIS3(nums));
+        System.out.println(lengthOfLIS4(nums));
+        System.out.println(lengthOfLIS5(nums));
     }
 }
