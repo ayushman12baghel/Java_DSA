@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Longest_Palindromic_Substring {
 
-    // Approach 1 Brute Force Memoisation O(n^3)
+    // Approach 1 Brute Force Memoisation O(n^2)
     public static String longestPalindrome(String s) {
         int n = s.length();
         String ans = "";
@@ -19,22 +19,20 @@ public class Longest_Palindromic_Substring {
         return ans;
     }
 
-    public static boolean isPalindrome(String str, int left, int right, Boolean dp[][]) {
-        int i = left;
-        int j = right;
-        if (dp[i][j] != null) {
+    private static boolean isPalindrome(String s, int i, int j, Boolean dp[][]) {
+        if (i >= j)
+            return true;
+
+        if (dp[i][j] != null)
             return dp[i][j];
-        }
-        while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
-                return dp[i][j] = false;
-            }
 
-            left++;
-            right--;
+        if (s.charAt(i) == s.charAt(j)) {
+            dp[i][j] = isPalindrome(s, i + 1, j - 1, dp);
+        } else {
+            dp[i][j] = false;
         }
 
-        return dp[i][j] = true;
+        return dp[i][j];
     }
 
     // Approach 2 Using BluePrint Tabulation O(n^2)
