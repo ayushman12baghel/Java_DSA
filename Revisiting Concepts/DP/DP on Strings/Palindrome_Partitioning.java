@@ -77,7 +77,6 @@ public class Palindrome_Partitioning {
 
         for (int j = i; j < str.length(); j++) {
             if (dp[i][j]) {
-                dp[i][j] = true;
                 curr.add(str.substring(i, j + 1));
                 solve(str, j + 1, curr, ans, dp);
 
