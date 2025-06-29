@@ -76,6 +76,25 @@ public class Merge_Intervals {
         return result.toArray(new int[result.size()][]);
     }
 
+    // Optimised and Easy to understand
+    public static int[][] merge(int[][] intervals) {
+        List<int[]> result = new ArrayList<>();
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        int newInterval[] = intervals[0];
+
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i][0] <= newInterval[1]) {
+                newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+            } else {
+                result.add(newInterval);
+                newInterval = intervals[i];
+            }
+        }
+        result.add(newInterval);
+
+        return result.toArray(new int[result.size()][]);
+    }
+
     public static void main(String args[]) {
         int intervals[][] = { { 1, 3 }, { 2, 6 }, { 8, 10 }, { 15, 18 } };
         int ans[][] = merge(intervals);
