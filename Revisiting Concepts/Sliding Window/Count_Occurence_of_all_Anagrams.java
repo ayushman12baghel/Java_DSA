@@ -44,6 +44,7 @@ public class Count_Occurence_of_all_Anagrams {
 
     public static void main(String[] args) {
         String text = "forxxorfxdofr";
+
         String pattern = "for";
 
         System.out.println(search(text, pattern));
