@@ -2,7 +2,37 @@ import java.util.*;
 
 public class Sliding_Window_Maximum {
 
-    public static int[] maxSlidingWindow(int nums[], int k) {
+    // Approach 1 Using TreeMap O(nlogk)
+    public static int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int ans[] = new int[n - k + 1];
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int i = 0;
+        int j = 0;
+        int x = 0;
+
+        while (j < n) {
+            map.put(nums[j], map.getOrDefault(nums[j], 0) + 1);
+
+            if (j - i + 1 == k) {
+                ans[x++] = map.lastKey();
+
+                map.put(nums[i], map.get(nums[i]) - 1);
+                if (map.get(nums[i]) == 0) {
+                    map.remove(nums[i]);
+                }
+
+                i++;
+            }
+
+            j++;
+        }
+
+        return ans;
+    }
+
+    // Approach 2 Using Deque O(n)
+    public static int[] maxSlidingWindow2(int nums[], int k) {
         int n = nums.length;
         Deque<Integer> deque = new ArrayDeque<>();
         List<Integer> result = new ArrayList<>();
