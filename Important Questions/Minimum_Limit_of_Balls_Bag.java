@@ -3,7 +3,7 @@ import java.util.*;
 public class Minimum_Limit_of_Balls_Bag {
 
     public static boolean isPossible(int mid, int nums[], int maxOps) {
-        int total = 0;
+        long total = 0;
 
         for (int num : nums) {
             int ops = num / mid;
