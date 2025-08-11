@@ -93,6 +93,68 @@ public class Longest_Palindromic_Substring {
         return str.substring(left + 1, right);
     }
 
+    // Approach 4 Manacher's Algo O(n)
+    public static String longestPalindrome4(String s) {
+        int n = s.length();
+        if (n == 0) {
+            return "";
+        }
+
+        // Manacher's for Odd length
+        int d1[] = new int[n];
+        int l = 0;
+        int r = -1;
+        for (int i = 0; i < n; i++) {
+            int k = (i > r) ? 1 : Math.min(d1[l + r - i], r - i + 1);
+            while (i - k >= 0 && i + k < n && s.charAt(i - k) == s.charAt(i + k)) {
+                k++;
+            }
+
+            d1[i] = k;
+            if (i + k - 1 > r) {
+                l = i - k + 1;
+                r = i + k - 1;
+            }
+        }
+
+        // Manacher's for Even Length
+        int d2[] = new int[n];
+        l = 0;
+        r = -1;
+        for (int i = 0; i < n; i++) {
+            int k = (i > r) ? 0 : Math.min(d2[l + r - i + 1], r - i + 1);
+            while (i - k - 1 >= 0 && i + k < n && s.charAt(i - k - 1) == s.charAt(i + k)) {
+                k++;
+            }
+
+            d2[i] = k;
+            if (i + k - 1 > r) {
+                l = i - k;
+                r = i + k - 1;
+            }
+        }
+
+        int maxLength = 1;
+        int start = 0;
+
+        for (int i = 0; i < n; i++) {
+            int length = 2 * d1[i] - 1;
+            if (length > maxLength) {
+                maxLength = length;
+                start = i - d1[i] + 1;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            int length = 2 * d2[i];
+            if (length > maxLength) {
+                maxLength = length;
+                start = i - d2[i];
+            }
+        }
+
+        return s.substring(start, start + maxLength);
+    }
+
     public static void main(String args[]) {
         String s = "babad";
 
