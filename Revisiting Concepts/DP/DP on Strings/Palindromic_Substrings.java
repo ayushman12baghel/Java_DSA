@@ -91,6 +91,53 @@ public class Palindromic_Substrings {
         return count;
     }
 
+    // Approach 4 By Manacher's Algo O(n)
+    public static int countSubstrings4(String s) {
+        int n = s.length();
+
+        // Odd
+        int d1[] = new int[n];
+        int l = 0;
+        int r = -1;
+        for (int i = 0; i < n; i++) {
+            int k = (i > r) ? 1 : Math.min(d1[l + r - i], r - i + 1);
+            while (i - k >= 0 && i + k < n && s.charAt(i - k) == s.charAt(i + k)) {
+                k++;
+            }
+
+            d1[i] = k;
+            if (i + k - 1 > r) {
+                r = i + k - 1;
+                l = i - k + 1;
+            }
+        }
+
+        // Even
+        int d2[] = new int[n];
+        l = 0;
+        r = -1;
+        for (int i = 0; i < n; i++) {
+            int k = (i > r) ? 0 : Math.min(d2[l + r - i + 1], r - i + 1);
+            while (i - k - 1 >= 0 && i + k < n && s.charAt(i - k - 1) == s.charAt(i + k)) {
+                k++;
+            }
+
+            d2[i] = k;
+            if (i + k - 1 > r) {
+                r = i + k - 1;
+                l = i - k;
+            }
+        }
+
+        int total = 0;
+        for (int num : d1)
+            total += num;
+        for (int num : d2)
+            total += num;
+
+        return total;
+    }
+
     public static void main(String[] args) {
         String str = "aaa";
 
