@@ -26,6 +26,17 @@ public class Power_of_Three {
         return n == 1;
     }
 
+    // Approach 3 O(1) Using log
+    public static boolean isPowerOfThree3(int n) {
+        if (n <= 0) {
+            return false;
+        }
+
+        double logValue = Math.log10(n) / Math.log10(3);
+
+        return logValue == (int) logValue;
+    }
+
     public static void main(String args[]) {
         int n = 27;
 
