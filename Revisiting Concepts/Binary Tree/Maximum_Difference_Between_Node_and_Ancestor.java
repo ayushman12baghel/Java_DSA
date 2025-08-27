@@ -1,5 +1,31 @@
 import java.util.*;
 
+//If They Dont want absolute Diff
+class Solution {
+    int result = Integer.MIN_VALUE;
+
+    int maxDiff(Node root) {
+        solve(root);
+
+        return result;
+    }
+
+    int solve(Node root) {
+        if (root == null) {
+            return Integer.MAX_VALUE;
+        }
+
+        if (root.left == null && root.right == null) {
+            return root.data;
+        }
+
+        int minDescendent = Math.min(solve(root.left), solve(root.right));
+        result = Math.max(result, root.data - minDescendent);
+
+        return Math.min(minDescendent, root.data);
+    }
+}
+
 // Approach 1 Brute Force O(n^2)
 class Solution {
     int maxDiff;
