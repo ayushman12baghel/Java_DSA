@@ -37,3 +37,32 @@ public class Generate_Parenthesis {
         System.out.println(list);
     }
 }
+
+// Using only StringBuilder no Stack
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        solve(n, 0, 0, ans, new StringBuilder());
+
+        return ans;
+    }
+
+    public void solve(int n, int oc, int cc, List<String> ans, StringBuilder sb) {
+        if (oc == n && cc == n) {
+            ans.add(sb.toString());
+            return;
+        }
+
+        if (oc < n) {
+            sb.append('(');
+            solve(n, oc + 1, cc, ans, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        if (cc < oc) {
+            sb.append(')');
+            solve(n, oc, cc + 1, ans, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+}
