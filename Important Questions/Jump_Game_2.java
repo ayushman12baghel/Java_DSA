@@ -32,3 +32,64 @@ public class Jump_Game_2 {
         System.out.println(minJumps(arr));
     }
 }
+
+// Memoisation O(n^2)
+class Solution {
+    public int jump(int[] nums) {
+        int dp[] = new int[nums.length];
+        Arrays.fill(dp, -1);
+        int ans = solve(nums, 0, dp);
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+    public int solve(int nums[], int index, int dp[]) {
+        if (index >= nums.length - 1) {
+            return 0;
+        }
+
+        if (dp[index] != -1) {
+            return dp[index];
+        }
+
+        int ans = Integer.MAX_VALUE;
+        for (int i = index + 1; i <= nums[index] + index; i++) {
+            int next = solve(nums, i, dp);
+
+            if (next != Integer.MAX_VALUE) {
+                ans = Math.min(ans, next + 1);
+            }
+        }
+
+        return dp[index] = ans;
+    }
+}
+
+// Optimal Greedy O(n)
+class Solution {
+    public int jump(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return 0;
+        }
+
+        int farthest = 0;
+        int end = 0;
+        int jumps = 0;
+
+        for (int i = 0; i < n; i++) {
+            farthest = Math.max(farthest, i + nums[i]);
+
+            if (i == end) {
+                jumps++;
+                end = farthest;
+
+                if (end >= n - 1) {
+                    return jumps;
+                }
+            }
+        }
+
+        return end < nums.length - 1 ? -1 : jumps;
+    }
+}
