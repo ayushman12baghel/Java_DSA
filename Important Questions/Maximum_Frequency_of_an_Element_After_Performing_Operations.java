@@ -42,3 +42,44 @@ class Solution {
         return result;
     }
 }
+
+// Approach 2 Using Difference Array
+class Solution {
+    public int maxFrequency(int[] nums, int k, int numOperations) {
+        int n = nums.length;
+
+        int maxElement = Integer.MIN_VALUE;
+        for (int num : nums) {
+            maxElement = Math.max(maxElement, num);
+        }
+
+        maxElement += k;
+        int diff[] = new int[maxElement + 2];
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            int left = Math.max(0, num - k);
+            int right = Math.min(num + k, maxElement);
+
+            diff[left]++;
+            diff[right + 1]--;
+        }
+
+        int result = 0;
+
+        for (int target = 0; target <= maxElement; target++) {
+            if (target > 0) {
+                diff[target] += diff[target - 1];
+            }
+
+            int targetCount = map.getOrDefault(target, 0);
+            int requiredOperations = diff[target] - targetCount;
+
+            int maxFreq = targetCount + Math.min(requiredOperations, numOperations);
+            result = Math.max(result, maxFreq);
+        }
+
+        return result;
+    }
+}
