@@ -66,6 +66,32 @@ public class Find_K_Pairs_With_Smallest_Sums {
         return ans;
     }
 
+    // Approach 3 More Optimised O(k log k)
+    class Solution {
+        public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+            PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+            List<List<Integer>> ans = new ArrayList<>();
+
+            for (int i = 0; i < Math.min(k, nums1.length); i++) {
+                pq.offer(new int[] { i, 0, nums1[i] + nums2[0] });
+            }
+
+            while (k-- > 0 && !pq.isEmpty()) {
+                int current[] = pq.poll();
+                int i = current[0];
+                int j = current[1];
+
+                ans.add(Arrays.asList(nums1[i], nums2[j]));
+
+                if (j + 1 < nums2.length) {
+                    pq.offer(new int[] { i, j + 1, nums1[i] + nums2[j + 1] });
+                }
+            }
+
+            return ans;
+        }
+    }
+
     public static void main(String[] args) {
         int nums1[] = { 1, 7, 11 };
         int nums2[] = { 2, 4, 6 };
