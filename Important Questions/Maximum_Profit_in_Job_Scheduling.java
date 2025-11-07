@@ -59,3 +59,80 @@ public class Maximum_Profit_in_Job_Scheduling {
         System.out.println(jobSequencing(startTime, endTime, profit));
     }
 }
+
+// Approach 2 Tabulation O(n log n)
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int n = endTime.length;
+        int nums[][] = new int[n][3];
+
+        for (int i = 0; i < n; i++) {
+            nums[i][0] = startTime[i];
+            nums[i][1] = endTime[i];
+            nums[i][2] = profit[i];
+        }
+
+        Arrays.sort(nums, (a, b) -> a[0] - b[0]);
+        int dp[] = new int[n + 1];
+
+        for (int i = n - 1; i >= 0; i--) {
+            int nextIndex = findIndex(nums, nums[i][1]);
+            int take = nums[i][2] + dp[nextIndex];
+            int notTake = dp[i + 1];
+
+            dp[i] = Math.max(take, notTake);
+        }
+
+        return dp[0];
+    }
+
+    public int findIndex(int nums[][], int prev) {
+        int left = 0;
+        int right = nums.length - 1;
+        int result = nums.length;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid][0] >= prev) {
+                result = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return result;
+    }
+}
+
+// Approach 3 Using PriorityQueue O(n log n)
+class Solution {
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        int n = endTime.length;
+        int nums[][] = new int[n][3];
+
+        for (int i = 0; i < n; i++) {
+            nums[i][0] = startTime[i];
+            nums[i][1] = endTime[i];
+            nums[i][2] = profit[i];
+        }
+
+        Arrays.sort(nums, (a, b) -> a[0] - b[0]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        int maxProfit = 0;
+
+        for (int i = 0; i < n; i++) {
+            while (!pq.isEmpty() && pq.peek()[0] <= nums[i][0]) {
+                maxProfit = Math.max(maxProfit, pq.poll()[1]);
+            }
+
+            pq.offer(new int[] { nums[i][1], maxProfit + nums[i][2] });
+        }
+
+        while (!pq.isEmpty()) {
+            maxProfit = Math.max(maxProfit, pq.poll()[1]);
+        }
+
+        return maxProfit;
+    }
+}
