@@ -248,3 +248,91 @@ class Solution {
         return ans;
     }
 }
+
+// DSU more Optimised O((N + Q) log N)
+class DSU {
+    int parent[];
+    int size[];
+
+    public DSU(int n) {
+        this.parent = new int[n];
+        this.size = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    public int find(int i) {
+        if (i == parent[i]) {
+            return i;
+        }
+
+        return parent[i] = find(parent[i]);
+    }
+
+    public void union(int x, int y) {
+        int parentX = find(x);
+        int parentY = find(y);
+
+        if (parentX == parentY) {
+            return;
+        }
+
+        if (size[parentX] > size[parentY]) {
+            parent[parentY] = parentX;
+            size[parentX] += size[parentY];
+        } else {
+            parent[parentX] = parentY;
+            size[parentY] += size[parentX];
+        }
+    }
+}
+
+class Solution {
+    public int[] processQueries(int c, int[][] connections, int[][] queries) {
+        DSU dsu = new DSU(c + 1);
+
+        for (int edge[] : connections) {
+            dsu.union(edge[0], edge[1]);
+        }
+
+        Map<Integer, TreeSet<Integer>> compMap = new HashMap<>();
+
+        for (int i = 1; i < c + 1; i++) {
+            int root = dsu.find(i);
+            compMap.computeIfAbsent(root, k -> new TreeSet<>()).add(i);
+        }
+
+        List<Integer> result = new ArrayList<>();
+
+        for (int query[] : queries) {
+            int type = query[0];
+            int x = query[1];
+
+            int componentId = dsu.find(x);
+            TreeSet<Integer> set = compMap.get(componentId);
+
+            if (type == 1) {
+                if (set.contains(x)) {
+                    result.add(x);
+                } else if (!set.isEmpty()) {
+                    result.add(set.first());
+                } else {
+                    result.add(-1);
+                }
+            } else {
+                set.remove(x);
+            }
+        }
+
+        int ans[] = new int[result.size()];
+
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = result.get(i);
+        }
+
+        return ans;
+    }
+}
