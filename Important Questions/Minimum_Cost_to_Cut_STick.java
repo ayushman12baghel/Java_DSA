@@ -40,3 +40,38 @@ public class Minimum_Cost_to_Cut_STick {
         System.out.println(minCost(n, cuts));
     }
 }
+
+// Approach 2 Using Tabulation O(n^3)
+class Solution {
+    public int minCost(int n, int[] cuts) {
+        int m = cuts.length;
+        int size = m + 2;
+
+        int newCuts[] = new int[size];
+        newCuts[0] = 0;
+        for (int i = 0; i < m; i++) {
+            newCuts[i + 1] = cuts[i];
+        }
+        newCuts[size - 1] = n;
+        Arrays.sort(newCuts);
+
+        int dp[][] = new int[size][size];
+
+        for (int L = 2; L < size; L++) {
+            for (int left = 0; left + L < size; left++) {
+                int right = left + L;
+
+                int ans = Integer.MAX_VALUE;
+
+                for (int i = left + 1; i < right; i++) {
+                    int cost = dp[left][i] + dp[i][right] + newCuts[right] - newCuts[left];
+                    ans = Math.min(ans, cost);
+                }
+
+                dp[left][right] = ans;
+            }
+        }
+
+        return dp[0][size - 1];
+    }
+}
