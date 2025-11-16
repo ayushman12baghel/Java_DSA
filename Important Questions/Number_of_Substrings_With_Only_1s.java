@@ -24,3 +24,23 @@ public class Number_of_Substrings_With_Only_1s {
         System.out.println(numSub(str));
     }
 }
+
+// Approach 2 O(n)
+class Solution {
+    public int numSub(String s) {
+        int ans = 0;
+        int mod = 1000000007;
+        int count1 = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '1') {
+                count1++;
+                ans = (ans + count1) % mod;
+            } else {
+                count1 = 0;
+            }
+        }
+
+        return ans;
+    }
+}
