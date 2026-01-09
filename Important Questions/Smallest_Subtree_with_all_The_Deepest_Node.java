@@ -192,3 +192,42 @@ class Solution {
         return 1 + Math.max(getHeight(root.left), getHeight(root.right));
     }
 }
+
+// Approach 3 One Pass O(n) asking each node what is the deepest height in your
+// subtree ? and what is the lca of the deepest node
+class Solution {
+    class Pair {
+        int depth;
+        TreeNode node;
+
+        public Pair(TreeNode node, int depth) {
+            this.node = node;
+            this.depth = depth;
+        }
+    }
+
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        return solve(root).node;
+    }
+
+    public Pair solve(TreeNode root) {
+        if (root == null) {
+            return new Pair(null, 0);
+        }
+
+        Pair left = solve(root.left);
+        Pair right = solve(root.right);
+
+        if (left.depth > right.depth) {
+            return new Pair(left.node, left.depth + 1);
+        } else if (left.depth < right.depth) {
+            return new Pair(right.node, right.depth + 1);
+        } else {
+            return new Pair(root, left.depth + 1);
+        }
+    }
+}
