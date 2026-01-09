@@ -125,3 +125,70 @@ public class Smallest_Subtree_with_all_The_Deepest_Node {
         System.out.println(subtreeWithAllDeepest(root).value);
     }
 }
+
+// Same as above but another try O(n)
+
+class Solution {
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        int height = getHeight(root);
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<TreeNode> endNodes = new ArrayList<>();
+        HashMap<TreeNode, TreeNode> childToParent = new HashMap<>();
+        queue.offer(root);
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            level++;
+
+            for (int i = 0; i < size; i++) {
+                TreeNode current = queue.poll();
+
+                if (level == height) {
+                    endNodes.add(current);
+                }
+
+                if (current.left != null) {
+                    queue.offer(current.left);
+                    childToParent.put(current.left, current);
+                }
+
+                if (current.right != null) {
+                    queue.offer(current.right);
+                    childToParent.put(current.right, current);
+                }
+            }
+        }
+
+        Set<TreeNode> currentLevelNodes = new HashSet<>(endNodes);
+
+        while (currentLevelNodes.size() > 1) {
+            Set<TreeNode> newLevelNodes = new HashSet<>();
+
+            for (TreeNode node : currentLevelNodes) {
+                TreeNode parent = childToParent.get(node);
+
+                if (parent != null) {
+                    newLevelNodes.add(parent);
+                }
+            }
+
+            currentLevelNodes = newLevelNodes;
+        }
+
+        return currentLevelNodes.iterator().next();
+    }
+
+    public int getHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        return 1 + Math.max(getHeight(root.left), getHeight(root.right));
+    }
+}
