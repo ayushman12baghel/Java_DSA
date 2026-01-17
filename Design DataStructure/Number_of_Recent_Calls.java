@@ -1,0 +1,26 @@
+import java.util.*:
+
+//O(1)
+class RecentCounter {
+    Deque<Integer> deque;
+    public RecentCounter() {
+        deque=new ArrayDeque<>();
+    }
+    
+    public int ping(int t) {
+        deque.addLast(t);
+        int earliestRequest=t-3000;
+
+        while(!deque.isEmpty() && deque.peekFirst()<earliestRequest){
+            deque.pollFirst();
+        }
+
+        return deque.size();
+    }
+}
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter obj = new RecentCounter();
+ * int param_1 = obj.ping(t);
+ */
