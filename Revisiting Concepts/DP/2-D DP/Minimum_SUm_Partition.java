@@ -72,3 +72,36 @@ class Solution {
         return minDiff;
     }
 }
+
+// Approach 3 Space Optimised
+class Solution {
+    public int minDifference(int nums[]) {
+        int n = nums.length;
+        int totalSum = 0;
+
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        boolean dp[] = new boolean[totalSum + 1];
+        dp[0] = true;
+
+        for (int num : nums) {
+            for (int sum = totalSum; sum >= num; sum--) {
+                dp[sum] = dp[sum] || dp[sum - num];
+            }
+        }
+
+        int minDiff = Integer.MAX_VALUE;
+
+        for (int sum = totalSum / 2; sum >= 0; sum--) {
+            if (dp[sum]) {
+                int otherSum = totalSum - sum;
+                minDiff = (otherSum - sum);
+                break;
+            }
+        }
+
+        return minDiff;
+    }
+}
