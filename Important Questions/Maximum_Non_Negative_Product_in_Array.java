@@ -98,3 +98,52 @@ public class Maximum_Non_Negative_Product_in_Array {
         System.out.println(maxProductPath2(grid));
     }
 }
+
+// More Readable Tabulation
+class Solution {
+    int mod = 1000000007;
+
+    public int maxProductPath(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+
+        long dp[][][] = new long[n][m][2];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                dp[i][j][0] = Long.MIN_VALUE;
+                dp[i][j][1] = Long.MAX_VALUE;
+            }
+        }
+
+        dp[n - 1][m - 1][0] = grid[n - 1][m - 1];
+        dp[n - 1][m - 1][1] = grid[n - 1][m - 1];
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+                if (i == n - 1 && j == m - 1) {
+                    continue;
+                }
+
+                long minValue = Long.MAX_VALUE;
+                long maxValue = Long.MIN_VALUE;
+
+                if (i + 1 < n) {
+                    long downMax[] = dp[i + 1][j];
+                    maxValue = Math.max(maxValue, Math.max(downMax[0] * grid[i][j], downMax[1] * grid[i][j]));
+                    minValue = Math.min(minValue, Math.min(downMax[0] * grid[i][j], downMax[1] * grid[i][j]));
+                }
+
+                if (j + 1 < m) {
+                    long rightMax[] = dp[i][j + 1];
+                    maxValue = Math.max(maxValue, Math.max(rightMax[0] * grid[i][j], rightMax[1] * grid[i][j]));
+                    minValue = Math.min(minValue, Math.min(rightMax[0] * grid[i][j], rightMax[1] * grid[i][j]));
+                }
+
+                dp[i][j][0] = maxValue;
+                dp[i][j][1] = minValue;
+            }
+        }
+
+        return (int) (dp[0][0][0] < 0 ? -1 : (dp[0][0][0]) % mod);
+    }
+}
