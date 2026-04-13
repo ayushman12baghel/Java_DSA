@@ -2,9 +2,10 @@ import java.util.*;
 
 // Approach O(n)
 class Solution {
-    Vector<Integer> generateNextPalindrome(int nums[], int n) {
+    static int[] nextPalindrome(int[] nums) {
+        int n = nums.length;
+
         boolean all9 = true;
-        Vector<Integer> ans = new Vector<>();
 
         for (int num : nums) {
             if (num != 9) {
@@ -13,14 +14,11 @@ class Solution {
             }
         }
 
-        if (all9) { // Case 1 All 9
-            ans.add(1);
-            for (int i = 0; i < n - 1; i++) {
-                ans.add(0);
-            }
+        if (all9) {
+            int ans[] = new int[n + 1];
+            ans[0] = 1;
 
-            ans.add(1);
-
+            ans[n] = 1;
             return ans;
         }
 
@@ -28,39 +26,33 @@ class Solution {
         int i = mid - 1;
         int j = (n % 2 == 0 ? mid : mid + 1);
 
-        // Get the first missmatch
         while (i >= 0 && nums[i] == nums[j]) {
             i--;
             j++;
         }
 
-        boolean leftSmaller = false;
+        boolean increaseMiddle = false;
 
         if (i < 0 || nums[i] < nums[j]) {
-            leftSmaller = true;
+            increaseMiddle = true;
         }
 
-        // if leftSmaller or already a palindrome increment the middle
-        if (leftSmaller) {
-            int current = (n - 1) / 2;
+        if (increaseMiddle) {
             int carry = 1;
+            int current = (n - 1) / 2;
 
-            while (current >= 0 && carry > 0) {
-                int sum = nums[current] + carry;
+            while (carry > 0) {
+                int sum = carry + nums[current];
                 carry = sum / 10;
                 nums[current] = sum % 10;
                 current--;
             }
         }
 
-        for (int k = 0; k <= (n - 1) / 2; k++) {
-            nums[n - k - 1] = nums[k];
+        for (i = 0; i <= mid; i++) {
+            nums[n - i - 1] = nums[i];
         }
 
-        for (int num : nums) {
-            ans.add(num);
-        }
-
-        return ans;
+        return nums;
     }
 }
