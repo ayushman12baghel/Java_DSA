@@ -1,6 +1,6 @@
 import java.util.*;
 
-// Approach O(nlogn)
+// Approach O(n*d)
 class Solution {
     public int minMirrorPairDistance(int[] nums) {
         Map<Integer, Integer> map = new HashMap<>();
