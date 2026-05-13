@@ -1,0 +1,65 @@
+import java.util.*;
+
+//Approach 1 Brute Force O(n*limit)
+class Solution {
+    public int minMoves(int[] nums, int limit) {
+        int n=nums.length;
+        int minMoves=Integer.MAX_VALUE;
+
+        for(int target=2;target<=2*limit;target++){
+            int current=0;
+
+            for(int i=0;i<n/2;i++){
+                int a=nums[i];
+                int b=nums[n-1-i];
+
+                int minOneMove=Math.min(a,b)+1;
+                int maxOneMove=Math.max(a,b)+limit;
+
+                if(a+b==target){
+                    current+=0;
+                }else if(minOneMove<=target && target<=maxOneMove){
+                    current+=1;
+                }else{
+                    current+=2;
+                }
+            }
+
+            minMoves=Math.min(minMoves,current);
+        }
+
+        return minMoves;
+    }
+}
+
+//Approach 2 Using Difference Array O(n)
+class Solution {
+    public int minMoves(int[] nums, int limit) {
+        int n = nums.length;
+        int[] delta = new int[2 * limit + 2];
+
+        for (int i = 0; i < n / 2; i++) {
+            int a = nums[i];
+            int b = nums[n - 1 - i];
+            
+            int minOneMove = Math.min(a, b) + 1;
+            int exactZeroMove = a + b;
+            int endExactZeroMove = a + b + 1;
+            int maxOneMove = Math.max(a, b) + limit + 1;
+            delta[minOneMove] -= 1;
+            delta[exactZeroMove] -= 1;
+            delta[endExactZeroMove] += 1;
+            delta[maxOneMove] += 1;
+        }
+
+        int currentMoves = n; 
+        int minTotalMoves = n;
+
+        for (int X = 2; X <= 2 * limit; X++) {
+            currentMoves += delta[X];
+            minTotalMoves = Math.min(minTotalMoves, currentMoves);
+        }
+        
+        return minTotalMoves;
+    }
+}
