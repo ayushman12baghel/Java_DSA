@@ -1,0 +1,32 @@
+class Solution {
+    public int maxSumSubarray(int[] nums) {
+        int n = nums.length;
+        
+        // Edge case: if array has only one element, we can't skip anything
+        if (n == 1) {
+            return nums[0];
+        }
+        
+        int maxNoSkip = nums[0];
+        // Initialize with a very small number to avoid overflow when adding negative numbers later
+        int maxWithSkip = Integer.MIN_VALUE / 2; 
+        int maxSum = nums[0];
+        
+        for (int i = 1; i < n; i++) {
+            // Option 1: Skip current element -> take previous maxNoSkip
+            // Option 2: Keep current element but we skipped one earlier -> previous maxWithSkip + nums[i]
+            int newMaxWithSkip = Math.max(maxNoSkip, maxWithSkip + nums[i]);
+            
+            // Standard Kadane's: extend the previous subarray or start a new one here
+            maxNoSkip = Math.max(nums[i], maxNoSkip + nums[i]);
+            
+            // The overall maximum could come from either a skipped subarray or a non-skipped one
+            maxSum = Math.max(maxSum, Math.max(maxNoSkip, newMaxWithSkip));
+            
+            // Move our new skip value into the tracker for the next loop iteration
+            maxWithSkip = newMaxWithSkip;
+        }
+        
+        return maxSum;
+    }
+}
