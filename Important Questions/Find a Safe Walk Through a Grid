@@ -1,0 +1,100 @@
+//Approach 1 O(n*m*health)
+class Solution {
+    public boolean findSafeWalk(List<List<Integer>> grid, int health) {
+        int n=grid.size();
+        int m=grid.get(0).size();
+
+        Queue<int[]> queue=new LinkedList<>();
+        boolean visited[][][]=new boolean[n][m][health+1];
+        
+        if(grid.get(0).get(0)==1){
+            health--;
+        }
+
+        queue.offer(new int[]{0,0,health});
+        visited[0][0][health]=true;
+        int directions[][]={{1,0},{-1,0},{0,1},{0,-1}};
+
+        while(!queue.isEmpty()){
+            int current[]=queue.poll();
+            int row=current[0];
+            int col=current[1];
+            int currHealth=current[2];
+
+            if(row==n-1 && col==m-1 && currHealth>0){
+                return true;
+            }
+
+            if(currHealth<0){
+                continue;
+            }
+
+            for(int direction[]:directions){
+                int newRow=row+direction[0];
+                int newCol=col+direction[1];
+
+                if(newRow>=0 && newCol>=0 && newRow<n && newCol<m){
+                    int newHealth=currHealth-grid.get(newRow).get(newCol);
+                    if(currHealth-grid.get(newRow).get(newCol)>0 && !visited[newRow][newCol][newHealth]){
+                        queue.offer(new int[]{newRow,newCol,newHealth});
+                        visited[newRow][newCol][newHealth]=true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+}
+
+//Approach 2 O(n*m)
+class Solution {
+    public boolean findSafeWalk(List<List<Integer>> grid, int health) {
+        int n=grid.size();
+        int m=grid.get(0).size();
+
+        Queue<int[]> queue=new LinkedList<>();
+        int best[][]=new int[n][m];
+        for(int row[]:best){
+            Arrays.fill(row,-1);
+        }
+        
+        if(grid.get(0).get(0)==1){
+            health--;
+        }
+
+        queue.offer(new int[]{0,0,health});
+        best[0][0]=health;
+        int directions[][]={{1,0},{-1,0},{0,1},{0,-1}};
+
+        while(!queue.isEmpty()){
+            int current[]=queue.poll();
+            int row=current[0];
+            int col=current[1];
+            int currHealth=current[2];
+
+            if(row==n-1 && col==m-1 && currHealth>0){
+                return true;
+            }
+
+            if(currHealth<0 || currHealth<best[row][col]){
+                continue;
+            }
+
+            for(int direction[]:directions){
+                int newRow=row+direction[0];
+                int newCol=col+direction[1];
+
+                if(newRow>=0 && newCol>=0 && newRow<n && newCol<m){
+                    int newHealth=currHealth-grid.get(newRow).get(newCol);
+                    if(newHealth>0 && best[newRow][newCol]<newHealth){
+                        queue.offer(new int[]{newRow,newCol,newHealth});
+                        best[newRow][newCol]=newHealth;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+}
