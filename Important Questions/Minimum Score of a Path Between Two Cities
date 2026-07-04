@@ -1,0 +1,82 @@
+//Approach Using BFS O(V+E)
+class Solution {
+    public int minScore(int n, int[][] roads) {
+        List<List<int[]>> graph=new ArrayList<>();
+
+        for(int i=0;i<n;i++){
+            graph.add(new ArrayList<>());
+        }
+
+        for(int edge[]:roads){
+            int u=edge[0]-1;
+            int v=edge[1]-1;
+            int w=edge[2];
+
+            graph.get(u).add(new int[]{v,w});
+            graph.get(v).add(new int[]{u,w});
+        }
+
+        Queue<Integer> queue=new LinkedList<>();
+        queue.offer(0);
+        boolean visited[]=new boolean[n];
+        visited[0]=true;
+
+        int ans=Integer.MAX_VALUE;
+
+        while(!queue.isEmpty()){
+            int node=queue.poll();
+
+            for(int neighbour[]:graph.get(node)){
+                int neigh=neighbour[0];
+                ans=Math.min(ans,neighbour[1]);
+
+                if(!visited[neigh]){
+                    queue.offer(neigh);
+                    visited[neigh]=true;
+                }
+            }
+        }
+
+        return ans;
+    }
+}class Solution {
+    public int minScore(int n, int[][] roads) {
+        List<List<int[]>> graph=new ArrayList<>();
+
+        for(int i=0;i<n;i++){
+            graph.add(new ArrayList<>());
+        }
+
+        for(int edge[]:roads){
+            int u=edge[0]-1;
+            int v=edge[1]-1;
+            int w=edge[2];
+
+            graph.get(u).add(new int[]{v,w});
+            graph.get(v).add(new int[]{u,w});
+        }
+
+        Queue<Integer> queue=new LinkedList<>();
+        queue.offer(0);
+        boolean visited[]=new boolean[n];
+        visited[0]=true;
+
+        int ans=Integer.MAX_VALUE;
+
+        while(!queue.isEmpty()){
+            int node=queue.poll();
+
+            for(int neighbour[]:graph.get(node)){
+                int neigh=neighbour[0];
+                ans=Math.min(ans,neighbour[1]);
+
+                if(!visited[neigh]){
+                    queue.offer(neigh);
+                    visited[neigh]=true;
+                }
+            }
+        }
+
+        return ans;
+    }
+}
