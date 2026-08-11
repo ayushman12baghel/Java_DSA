@@ -1,0 +1,76 @@
+class Solution {
+
+    ArrayList<Integer> largestSquare(int[][] mat, int[][] queries, int k) {
+        int n = mat.length;
+        int m = mat[0].length;
+
+        // 2D prefix sum
+        int[][] pref = new int[n + 1][m + 1];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                pref[i + 1][j + 1] =
+                    mat[i][j]
+                    + pref[i][j + 1]
+                    + pref[i + 1][j]
+                    - pref[i][j];
+            }
+        }
+
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        for (int[] query : queries) {
+            int x = query[0];
+            int y = query[1];
+
+            // Maximum radius possible without going outside the matrix
+            int maxRadius = Math.min(
+                Math.min(x, n - 1 - x),
+                Math.min(y, m - 1 - y)
+            );
+
+            // Check if even the 1x1 square is invalid
+            if (getSum(pref, x, y, x, y) > k) {
+                ans.add(-1);
+                continue;
+            }
+
+            // Binary search for largest valid radius
+            int low = 0;
+            int high = maxRadius;
+            int best = 0;
+
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+
+                int r1 = x - mid;
+                int r2 = x + mid;
+                int c1 = y - mid;
+                int c2 = y + mid;
+
+                int ones = getSum(pref, r1, c1, r2, c2);
+
+                if (ones <= k) {
+                    best = mid;
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+
+            // radius r => side length 2*r + 1
+            ans.add(2 * best + 1);
+        }
+
+        return ans;
+    }
+
+    // Returns number of 1s in rectangle
+    // (r1, c1) to (r2, c2), inclusive.
+    private int getSum(int[][] pref, int r1, int c1, int r2, int c2) {
+        return pref[r2 + 1][c2 + 1]
+             - pref[r1][c2 + 1]
+             - pref[r2 + 1][c1]
+             + pref[r1][c1];
+    }
+}
