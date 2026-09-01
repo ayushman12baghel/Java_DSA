@@ -1,0 +1,26 @@
+class Solution {
+    public int palindromicStrings(int n, int k) {
+        long MOD = 1000000007L;
+        long ans = 0;
+
+        for (int len = 1; len <= n; len++) {
+            int pairs = len / 2;
+
+            if (pairs > k) continue;
+
+            long ways = 1;
+
+            for (int i = 0; i < pairs; i++) {
+                ways = ways * (k - i) % MOD;
+            }
+
+            if ((len & 1) == 1) {
+                ways = ways * (k - pairs) % MOD;
+            }
+
+            ans = (ans + ways) % MOD;
+        }
+
+        return (int) ans;
+    }
+}
