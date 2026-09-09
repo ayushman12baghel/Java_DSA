@@ -1,0 +1,23 @@
+class Solution {
+    public long countCommas(long n) {
+        long commas = 0;
+        
+        if (n >= 1_000L) {
+            commas += n - 999L;
+        }
+        if (n >= 1_000_000L) {
+            commas += n - 999_999L;
+        }
+        if (n >= 1_000_000_000L) {
+            commas += n - 999_999_999L;
+        }
+        if (n >= 1_000_000_000_000L) {
+            commas += n - 999_999_999_999L;
+        }
+        if (n >= 1_000_000_000_000_000L) {
+            commas += n - 999_999_999_999_999L;
+        }
+        
+        return commas;
+    }
+}
