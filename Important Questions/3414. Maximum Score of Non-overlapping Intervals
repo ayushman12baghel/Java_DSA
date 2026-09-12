@@ -1,0 +1,97 @@
+import java.util.*;
+
+class Solution {
+    class Interval implements Comparable<Interval> {
+        int l, r, w, id;
+        
+        Interval(int l, int r, int w, int id) {
+            this.l = l;
+            this.r = r;
+            this.w = w;
+            this.id = id;
+        }
+        
+        public int compareTo(Interval other) {
+            if (this.l != other.l) return Integer.compare(this.l, other.l);
+            return Integer.compare(this.r, other.r);
+        }
+    }
+
+    class State {
+        long w;
+        int[] ids;
+        
+        State(long w, int[] ids) {
+            this.w = w;
+            this.ids = ids;
+        }
+    }
+
+    public int[] maximumWeight(List<List<Integer>> intervals) {
+        int n = intervals.size();
+        Interval[] arr = new Interval[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = new Interval(intervals.get(i).get(0), intervals.get(i).get(1), intervals.get(i).get(2), i);
+        }
+        Arrays.sort(arr);
+
+        State[][] dp = new State[n + 1][5];
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = new State(0L, new int[0]);
+        }
+        for (int k = 1; k <= 4; k++) {
+            dp[n][k] = new State(0L, new int[0]);
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            int nxt = findNxt(arr, arr[i].r);
+            for (int k = 1; k <= 4; k++) {
+                State skip = dp[i + 1][k];
+                long takeW = arr[i].w + dp[nxt][k - 1].w;
+                int[] oldIds = dp[nxt][k - 1].ids;
+                int[] takeIds = new int[oldIds.length + 1];
+                int newId = arr[i].id;
+                int ptr = 0;
+                boolean inserted = false;
+                
+                for (int val : oldIds) {
+                    if (!inserted && newId < val) {
+                        takeIds[ptr++] = newId;
+                        inserted = true;
+                    }
+                    takeIds[ptr++] = val;
+                }
+                if (!inserted) takeIds[ptr] = newId;
+
+                if (isBetter(takeW, takeIds, skip.w, skip.ids)) {
+                    dp[i][k] = new State(takeW, takeIds);
+                } else {
+                    dp[i][k] = skip;
+                }
+            }
+        }
+        return dp[0][4].ids;
+    }
+
+    private int findNxt(Interval[] arr, int target) {
+        int low = 0, high = arr.length - 1, ans = arr.length;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (arr[mid].l > target) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    private boolean isBetter(long w1, int[] id1, long w2, int[] id2) {
+        if (w1 != w2) return w1 > w2;
+        for (int i = 0; i < Math.min(id1.length, id2.length); i++) {
+            if (id1[i] != id2[i]) return id1[i] < id2[i];
+        }
+        return id1.length < id2.length;
+    }
+}
